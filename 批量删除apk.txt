@@ -1,0 +1,39 @@
+@echo off&setlocal enabledelaydexpansion
+title adb uninstall [by QI]
+
+rem set adb路径
+set adb_path=D:\Program Files\android-sdk-windows\palatform-tools
+
+rem 查看adb.exe是否存在
+if exit %adb_path%\adb.exe (goto :handle) eles (echo 请检查ADB是路径是否正确并修正后重试！ &go'to :end)
+
+rem adb.exe存在时执行
+：handle
+
+rem path环境变量配置
+set path=%adb_path%;%paht%
+
+echo 务必认真阅读
+echo 1.请将要卸载的apk包名，批量写入本bat同目录的package.txt(请自行新建）！
+echo 2.包名请单行输入，也就是不同包名之间用回车换行！
+
+rem 检测是否存在package.txt
+if exist package.txt(
+rem 遍历文件
+for /f %%1 in (package.txt) do (
+set /a num+=1
+echo.&echo "%%1"卸载中……
+call adb shell pm uninstall -k --user 0 %%1
+)
+)
+else(
+echo.&echo package.txt不存在，请自行新建！
+）
+
+：end
+echo.
+pause
+
+
+
+
